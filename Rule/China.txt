@@ -5,6 +5,9 @@ USER-AGENT,WeChat*
 # #国内常用网站
 DOMAIN-SUFFIX,cn
 DOMAIN-KEYWORD,-cn
+DOMAIN-KEYWORD,qq.com
+DOMAIN-KEYWORD,weixin
+
 
 #Appstore
 DOMAIN,apps.apple.com
