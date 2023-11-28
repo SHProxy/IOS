@@ -20,5 +20,5 @@
 *.bilibili.com = server:https://dns.pub/dns-query
 *testflight.apple.com = server:180.184.1.1
 *.google.com = server:180.184.1.1
-*.google*.*= server:180.184.1.1
-*.baidu*.*= server:180.76.76.76
+*.google.cn= server:180.184.1.1
+*.baidu.com= server:180.76.76.76
