@@ -1,0 +1,24 @@
+#!name= HostDns
+#!desc=dns映射
+#!openUrl= https://github.com/moqiyuan007
+#!homepage=https://github.com/moqiyuan007
+[Host]
+*.taobao.com = server:https://dns.alidns.com/dns-query
+*.tmall.com = server:https://dns.alidns.com/dns-query
+*.jd.com = server:119.28.28.28
+*.qq.com = server:https://dns.pub/dns-query
+*.tencent.com = server:119.28.28.28
+*.alicdn.com = server:https://dns.alidns.com/dns-query
+*.aliyun.com = server:https://dns.alidns.com/dns-query
+*.weixin.com = server:https://dns.pub/dns-query
+*.163.com = server:https://dns.pub/dns-query
+*.126.com = server:https://dns.pub/dns-query
+*.126.net = server:https://dns.pub/dns-query
+*.netease.com = server:https://dns.pub/dns-query
+*.mi.com = server:https://dns.pub/dns-query
+*.xiaomi.com = server:https://dns.pub/dns-query
+*.bilibili.com = server:https://dns.pub/dns-query
+*testflight.apple.com = server:180.184.1.1
+*.google.com = server:180.184.1.1
+*.google*.*= server:180.184.1.1
+*.baidu*.*= server:180.76.76.76
