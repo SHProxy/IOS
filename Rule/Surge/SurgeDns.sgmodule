@@ -1,0 +1,28 @@
+#!name=Host DNS
+#!desc=DNS配置
+#!system=ios
+# 更新日期：2023.12.6
+# 版本：1.0
+
+[General]
+#DNS服务器
+dns-server = 180.184.1.1, 223.6.6.6, 119.29.29.29, 180.76.76.76, system
+
+#DNS加密
+encrypted-dns-server = https://dns.alidns.com/dns-query,https://dns.pub/dns-query
+#dns映射
+[Host]
+# *.* = server:https://dns.alidns.com/dns-query
+*.google.com = server:114.114.115.115
+*.youtube.* = server:119.29.29.29
+*.jiashule.com = server:180.76.76.76
+*.baidu.com = server:180.76.76.76
+*.google.cn = server:114.114.114.114
+*.tencent.com = server:https://dns.pub/dns-query
+*.icloud.com = server:119.29.29.29
+*.icloud.com.cn = server:119.29.29.29
+*.icloud.com = server:119.29.29.29
+*.weixin.com = server:119.29.29.29
+*.qq.com = server:119.29.29.29
+*xxxx-inc.com = server:syslib
+*example*.com = server:syslib
