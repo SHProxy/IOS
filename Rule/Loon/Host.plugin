@@ -22,3 +22,5 @@
 *.google.com = server:180.184.1.1
 *.google.cn= server:180.184.1.1
 *.baidu.com= server:180.76.76.76
+*.apple.com = server:https://doh.dns.apple.com/dns-query
+*.itunes.com = server:https://doh.dns.apple.com/dns-query
