@@ -1,0 +1,185 @@
+http_port: 7890
+socks_port: 7891
+vif_only: false
+hide_vpn_icon: false
+dns_servers:
+- 180.184.2.2
+- 119.28.28.28
+- 180.184.1.1
+- 114.114.114.114
+- 223.5.5.5
+- 119.29.29.29
+hosts:
+  '*.baidu.com': 180.76.76.76
+secure_dns:
+  servers:
+  - https://223.5.5.5
+  ecs: false
+  public_ip_lookup_url: ''
+proxies:
+- vmess:
+    name: 韩国vemss
+    server: 193.122.123.188
+    port: 22791
+    user_id: 5cd0dd22-0424-4ada-c750-f23c15566bca,
+    security: aes-128-gcm
+    legacy: false
+    tfo: false
+    udp_relay: true
+    transport:
+      tcp: {}
+- shadowsocks:
+    name: 07号|1.2X|新加坡1-隧道-原生
+    method: aes-256-gcm
+    password: 7e483fcc-1f5b-491d-8a92-5c6822b19cb9
+    server: v4.thecw.top
+    port: 54866
+    tfo: false
+    udp_relay: true
+- shadowsocks:
+    name: PRO|1.5X|香港专线2-原生
+    method: aes-256-gcm
+    password: 7e483fcc-1f5b-491d-8a92-5c6822b19cb9
+    server: hk1.thecw.top
+    port: 48897
+    tfo: false
+    udp_relay: true
+- shadowsocks:
+    name: PRO|1.5X|香港专线-原生
+    method: aes-256-gcm
+    password: 7e483fcc-1f5b-491d-8a92-5c6822b19cb9
+    server: hk8.thecw.top
+    port: 36623
+    tfo: true
+    udp_relay: true
+policy_groups:
+- select:
+    name: Proxy
+    policies:
+    - 自动优选
+    - HK香港
+    - JP日本
+    - 本地代理
+    flatten: false
+- auto_test:
+    name: 自动优选
+    policies:
+    - ALL
+    flatten: true
+    filter: ^(.*香港.*|.*日本[0-9]|JP|Tokyo|Hong|US|美国)
+    interval: 600
+    tolerance: 10
+    timeout: 5
+- auto_test:
+    name: JP日本
+    policies:
+    - ALL
+    flatten: true
+    filter: ^(.*日本[0-9]|JP|Tokyo)
+    tolerance: 10
+    timeout: 5
+- auto_test:
+    name: HK香港
+    policies:
+    - ALL
+    flatten: true
+    filter: ^(.*香港.*|.*Hong|.*HK)
+    tolerance: 10
+    timeout: 5
+- external:
+    name: ALL
+    type: select
+    urls:
+    - https://dy.zou666.xyz/api/v1/client/subscribe?token=b67e314d0a83b04f7275ce187bb32675
+    filter: ^(?!(.*邀请|.*剩余|.*距离|.*到期.*)).*$
+- auto_test:
+    name: Google
+    policies:
+    - ALL
+    flatten: true
+    filter: ^(.*香港.*|.*日本[0-9]|JP|Tokyo|Hong)
+    interval: 600
+    tolerance: 1
+    timeout: 5
+- select:
+    name: 本地代理
+    policies:
+    - PRO|1.5X|香港专线-原生
+    - 07号|1.2X|新加坡1-隧道-原生
+    - PRO|1.5X|香港专线2-原生
+    - 韩国vemss
+    flatten: false
+rules:
+- rule_set:
+    match: https://raw.githubusercontents.com/SHProxy/IOS/main/Rule/advertising.txt
+    policy: REJECT
+- url_regex:
+    match: https://raw.githubusercontents.com/SHProxy/IOS/main/Rule/GlobalMediaplayer.txt
+    policy: Proxy
+- rule_set:
+    match: https://raw.githubusercontents.com/SHProxy/IOS/main/Rule/China.txt
+    policy: DIRECT
+- rule_set:
+    match: https://raw.githubusercontents.com/SHProxy/IOS/main/Rule/Global.txt
+    policy: Proxy
+- rule_set:
+    match: https://raw.githubusercontents.com/VirgilClyne/GetSomeFries/main/ruleset/ASN.China.list
+    policy: DIRECT
+- domain:
+    match: cloudflare.com
+    policy: Proxy
+- ip_cidr:
+    match: 192.168.0.0/16
+    policy: DIRECT
+- ip_cidr:
+    match: 10.0.0.0/8
+    policy: DIRECT
+- ip_cidr:
+    match: 127.0.0.0/8
+    policy: DIRECT
+- ip_cidr:
+    match: 172.16.0.0/12
+    policy: DIRECT
+- ip_cidr:
+    match: 192.128.0.0/16
+    policy: DIRECT
+- ip_cidr:
+    match: 224.0.0.0/24
+    policy: DIRECT
+- geoip:
+    match: CN
+    policy: DIRECT
+- default:
+    policy: Proxy
+mitm:
+  enabled: true
+  ca_p12: egern.p12
+  ca_passphrase: egern
+modules:
+- name: 去广告小火箭版
+  url: https://cdn.jsdelivr.net/gh/GMOogway/shadowrocket-rules@master/sr_reject_list.module
+  enabled: true
+- name: tiktok韩国
+  url: https://raw.githubusercontent.com/Semporia/TikTok-Unlock/master/Surge/TiKTok-KR.sgmodule
+  enabled: true
+- name: sub-Store
+  url: https://raw.githubusercontent.com/Peng-YM/Sub-Store/master/config/Surge.sgmodule
+  enabled: true
+- name: proknockout
+  url: https://yfamily.vercel.app/module/proknockout.module
+  enabled: true
+- name: pixelance
+  url: https://yfamily.vercel.app/module/pixelance.module
+  enabled: true
+- name: photoshop
+  url: https://yfamily.vercel.app/module/photoshop.module
+  enabled: true
+- name: 大神水印
+  url: https://yfamily.vercel.app/module/dssy.module
+  enabled: true
+- name: YOUTUBE 去广告
+  url: https://yfamily.vercel.app/sgmodule/YouTubeAd.sgmodule
+  enabled: true
+- name: 番茄小说去广告
+  url: https://raw.githubusercontent.com/zqzess/rule_for_quantumultX/master/Surge/Module/FanQieNovel.sgmodule
+  enabled: true

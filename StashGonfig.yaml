@@ -1,0 +1,202 @@
+dns:
+  default-nameserver:
+    - 223.5.5.5
+    - 180.184.1.1
+    - 119.29.29.29
+    - 180.76.76.76
+    - 223.6.6.6
+  fake-ip-filter: null
+  nameserver:
+    - https://dns.alidns.com/dns-query
+    - https://doh.pub/dns-query
+    - 180.184.1.1
+  nameserver-policy:
+    www.google.com: 180.184.1.1
+    '*.apple.com': https://doh.dns.apple.com/dns-query
+    '*.baidu*.com': ""
+    '*.google.com': 180.184.1.1
+    '*.itunes.com': https://doh.dns.apple.com/dns-query
+    '*.qq.com': https://dns.pub/dns-query
+    '*.wechat.com': https://dns.pub/dns-query
+    '*.weixin.com': https://dns.pub/dns-query
+    '*.baidu.com': 180.76.76.76
+    '*.icloud.com': https://doh.dns.apple.com/dns-query
+    '*.tencent.com': https://dns.pub/dns-query
+log-level: info
+mode: rule
+proxy-groups:
+  - icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Global.png
+    name: Proxy
+    proxies:
+      - 自动优选
+      - 手动选择
+      - HK 香港
+      - TW 台湾
+      - JP 日本
+      - US 美国
+    type: select
+  - icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Auto.png
+    include-all: true
+    interval: 600
+    lazy: null
+    name: 自动优选
+    proxies: null
+    tolerance: 10
+    type: url-test
+    url: http://cp.cloudflare.com/generate_204
+    use: null
+  - # 手动选择节点
+    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Available.png
+    include-all: true
+    interval: 600
+    lazy: true
+    name: 手动选择
+    proxies: null
+    type: select
+    url: http://cp.cloudflare.com/generate_204
+  - # 视频音乐播放
+    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/YouTube.png
+    lazy: true
+    name: 国际媒体
+    proxies:
+      - 自动优选
+      - 手动选择
+      - HK 香港
+      - TW 台湾
+      - JP 日本
+      - US 美国
+    type: select
+  - filter: ".*香|港|🇭🇰|HK|(?i)Hong"
+    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/HK.png
+    include-all: true
+    interval: 600
+    lazy: true
+    name: HK 香港
+    proxies: null
+    tolerance: 10
+    type: url-test
+    url: http://cp.cloudflare.com/generate_204
+  - filter: "台|🇨🇳|🇹🇼|湾|TW|(?i)Taiwan"
+    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/TW.png
+    include-all: true
+    interval: 600
+    lazy: true
+    name: TW 台湾
+    proxies: null
+    tolerance: 10
+    type: url-test
+    url: http://cp.cloudflare.com/generate_204
+  - filter: "日|🇯🇵|东京|JP|(?i)Japan"
+    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/JP.png
+    include-all: true
+    interval: 600
+    lazy: true
+    name: JP 日本
+    proxies: null
+    tolerance: 10
+    type: url-test
+    url: http://cp.cloudflare.com/generate_204
+  - filter: "美|🇺🇲|US|(?i)States|American"
+    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/US.png
+    include-all: true
+    interval: 600
+    lazy: true
+    name: US 美国
+    proxies: null
+    tolerance: 10
+    type: url-test
+    url: http://cp.cloudflare.com/generate_204
+  - icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Bypass.png
+    lazy: true
+    name: FINAL兜底
+    proxies:
+      - Proxy
+      - 自动优选
+      - 手动选择
+      - DIRECT
+    type: select
+proxy-providers: {ZOU: {benchmark-timeout: 5, benchmark-url: 'http://www.gstatic.com/generate_204', interval: 14400, url: 'https://dy.zou666.xyz/api/v1/client/subscribe?token=b67e314d0a83b04f7275ce187bb32675'}, 五元一千: {benchmark-timeout: 5, benchmark-url: 'http://www.gstatic.com/generate_204', interval: 14400, url: 'https://subscribe.nodedomain.top/api/v1/client/subscribe?token=836c2f0929dc1b7dd5b11f93fe79c4d3'}}
+rule-providers: {'': {behavior: domain, format: text, interval: 0, url: 'https://raw.githubusercontents.com/SHProxy/IOS/main/Rule/Global.txt'}, 全球加速: {behavior: domain, format: text, interval: 86400, url: 'https://raw.githubusercontents.com/SHProxy/IOS/main/Rule/Global.txt'}, 国内直连: {behavior: domain, format: text, interval: 86400, url: 'https://raw.githubusercontents.com/SHProxy/IOS/main/Rule/China.txt'}, 国际媒体: {behavior: domain, format: text, interval: 86400, url: 'https://raw.githubusercontents.com/SHProxy/IOS/main/Rule/GlobalMediaplayer.txt'}, 广告终结: {behavior: domain, format: text, interval: 86400, url: 'https://raw.githubusercontents.com/SHProxy/IOS/main/Rule/advertising.txt'}, ASN-China: {behavior: domain, format: text, interval: 86400, url: 'https://raw.githubusercontents.com/SHProxy/IOS/main/Rule/ASN-China.txt'}}
+rules:
+  - RULE-SET,ASN-China,DIRECT # ASN-China
+  - RULE-SET,广告终结,REJECT # 广告终结者
+  - RULE-SET,国际媒体,国际媒体 # 国际媒体代理
+  - RULE-SET,国内直连,DIRECT # 国内直连列表
+  - RULE-SET,全球加速,自动优选 # 全球代理加速
+  - SCRIPT,quic,REJECT
+  - IP-ASN,62014,Proxy,no-resolve
+  - IP-ASN,59930,Proxy,no-resolve
+  - IP-ASN,44907,Proxy,no-resolve
+  - IP-ASN,211157,Proxy,no-resolve
+  - PROCESS-NAME,Telegram.exe,Proxy
+  - PROCESS-NAME,Telegram,Proxy
+  - DOMAIN-SUFFIX,tapbots.com,Proxy
+  - DOMAIN-SUFFIX,iphone-ld.apple.com,DIRECT
+  - DOMAIN-SUFFIX,lcdn-locator.apple.com,DIRECT
+  - DOMAIN-SUFFIX,lcdn-registration.apple.com,DIRECT
+  - DOMAIN-SUFFIX,push.apple.com,DIRECT
+  - PROCESS-NAME,trustd,Proxy
+  - PROCESS-NAME,v2ray,DIRECT
+  - PROCESS-NAME,Surge,DIRECT
+  - PROCESS-NAME,ss-local,DIRECT
+  - PROCESS-NAME,privoxy,DIRECT
+  - PROCESS-NAME,trojan,DIRECT
+  - PROCESS-NAME,trojan-go,DIRECT
+  - PROCESS-NAME,naive,DIRECT
+  - PROCESS-NAME,CloudflareWARP,DIRECT
+  - PROCESS-NAME,Cloudflare WARP,DIRECT
+  - IP-CIDR,162.159.193.0/24,DIRECT,no-resolve
+  - PROCESS-NAME,p4pclient,DIRECT
+  - PROCESS-NAME,Thunder,DIRECT
+  - PROCESS-NAME,DownloadService,DIRECT
+  - PROCESS-NAME,qbittorrent,DIRECT
+  - PROCESS-NAME,Transmission,DIRECT
+  - PROCESS-NAME,fdm,DIRECT
+  - PROCESS-NAME,aria2c,DIRECT
+  - PROCESS-NAME,Folx,DIRECT
+  - PROCESS-NAME,NetTransport,DIRECT
+  - PROCESS-NAME,uTorrent,DIRECT
+  - PROCESS-NAME,WebTorrent,DIRECT
+  - GEOIP,LAN,DIRECT
+  - GEOIP,CN,DIRECT
+  - MATCH,FINAL兜底 # 最终规则走向
+script:
+  shortcuts:
+    quic: network == 'udp' and dst_port == 443
+subscribe-url: https://sub.zou666.xyz/api/v1/client/subscribe?token=9e407dad43ecdc992e840e3f457ea73a
+proxies:
+  - auth-str: hysteria
+    down-speed: null
+    name: hysteria2
+    port: 6443
+    server: slcm.domob.org
+    servername: kr.domob.org
+    skip-cert-verify: true
+    sni: kr.domob.org
+    type: hysteria2
+    up-speed: null
+    tls: true
+    protocol: null
+    alpn: null
+    benchmark-timeout: 5
+    benchmark-url: http://www.gstatic.com/generate_204
+    auth: "hysteria"
+    fast-open: false
+  - # 1x
+    alterId: 0
+    cipher: chacha20-poly1305
+    flow: ""
+    name: 日本01|1X
+    port: 49511
+    server: 935243706c2a34f5.cdn.jiashule.com
+    type: vmess
+    uuid: df2e402b-a8de-455c-bd39-018516481e07
+  - alterId: 0
+    cipher: chacha20-poly1305
+    flow: ""
+    name: 日本02|1X
+    port: 49522
+    server: 91d2af82196df48e.cdn.jiashule.com
+    type: vmess
+    uuid: df2e402b-a8de-455c-bd39-018516481e07
+hosts: null
