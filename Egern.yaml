@@ -1,57 +1,34 @@
 http_port: 7890
 socks_port: 7891
+allow_external_connections: false
 vif_only: false
 hide_vpn_icon: false
-dns_servers:
-- 180.184.2.2
-- 119.28.28.28
-- 180.184.1.1
-- 114.114.114.114
-- 223.5.5.5
-- 119.29.29.29
-hosts:
-  '*.baidu.com': 180.76.76.76
-secure_dns:
-  servers:
-  - https://223.5.5.5
-  ecs: false
-  public_ip_lookup_url: ''
-proxies:
-- vmess:
-    name: 韩国vemss
-    server: 193.122.123.188
-    port: 22791
-    user_id: 5cd0dd22-0424-4ada-c750-f23c15566bca,
-    security: aes-128-gcm
-    legacy: false
-    tfo: false
-    udp_relay: true
-    transport:
-      tcp: {}
-- shadowsocks:
-    name: 07号|1.2X|新加坡1-隧道-原生
-    method: aes-256-gcm
-    password: 7e483fcc-1f5b-491d-8a92-5c6822b19cb9
-    server: v4.thecw.top
-    port: 54866
-    tfo: false
-    udp_relay: true
-- shadowsocks:
-    name: PRO|1.5X|香港专线2-原生
-    method: aes-256-gcm
-    password: 7e483fcc-1f5b-491d-8a92-5c6822b19cb9
-    server: hk1.thecw.top
-    port: 48897
-    tfo: false
-    udp_relay: true
-- shadowsocks:
-    name: PRO|1.5X|香港专线-原生
-    method: aes-256-gcm
-    password: 7e483fcc-1f5b-491d-8a92-5c6822b19cb9
-    server: hk8.thecw.top
-    port: 36623
-    tfo: true
-    udp_relay: true
+geoip_db_url: https://cdn.jsdelivr.net/gh/soffchen/GeoIP2-CN@release/Country.mmdb
+proxy_latency_test_url: http://connectivitycheck.gstatic.com/generate_204
+direct_latency_test_url: https://www.baidu.com
+dns:
+  bootstrap:
+  - 119.29.29.29
+  - 223.5.5.5
+  - hhttps://dns.pub/dns-query
+  - https://dns.alidns.com/dns-query
+  - 180.184.1.1
+  upstreams:
+    阿里巴巴:
+    - https://dns.alidns.com/dns-query
+    腾讯云:
+    - hhttps://dns.pub/dns-query
+    Adguard:
+    - https://dns.adguard-dns.com/dns-query
+  forward:
+  - wildcard:
+      match: ''
+      value: ''
+  hosts:
+    '*.tencent.com': https://dns.pub/dns-query
+    '*.qq.com': 119.29.29.29
+    '*.weixin.com': 119.29.29.29
+  public_ip_lookup_url: http://www.net.cn/static/customercare/yourip.asp
 policy_groups:
 - select:
     name: Proxy
@@ -59,8 +36,9 @@ policy_groups:
     - 自动优选
     - HK香港
     - JP日本
-    - 本地代理
+    - 全球加速
     flatten: false
+    icon: https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Universal/Final.png
 - auto_test:
     name: 自动优选
     policies:
@@ -70,6 +48,7 @@ policy_groups:
     interval: 600
     tolerance: 10
     timeout: 5
+    icon: https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Auto.png
 - auto_test:
     name: JP日本
     policies:
@@ -78,6 +57,7 @@ policy_groups:
     filter: ^(.*日本[0-9]|JP|Tokyo)
     tolerance: 10
     timeout: 5
+    icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/JP.png
 - auto_test:
     name: HK香港
     policies:
@@ -86,12 +66,15 @@ policy_groups:
     filter: ^(.*香港.*|.*Hong|.*HK)
     tolerance: 10
     timeout: 5
+    icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/HK.png
 - external:
     name: ALL
     type: select
     urls:
-    - https://dy.zou666.xyz/api/v1/client/subscribe?token=b67e314d0a83b04f7275ce187bb32675
+    - https://45bcb080ade759e2.cdn.jiashule.com/api/v1/client/subscribe?token=b67e314d0a83b04f7275ce187bb32675
     filter: ^(?!(.*邀请|.*剩余|.*距离|.*到期.*)).*$
+    icon: https://raw.githubusercontent.com/tugepaopao/Image-Storage/master/cartoon/Cute/%23.png
+    hidden: true
 - auto_test:
     name: Google
     policies:
@@ -101,30 +84,52 @@ policy_groups:
     interval: 600
     tolerance: 1
     timeout: 5
+    icon: https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Google_Suite/Google.png
 - select:
-    name: 本地代理
+    name: 全球加速
     policies:
-    - PRO|1.5X|香港专线-原生
-    - 07号|1.2X|新加坡1-隧道-原生
-    - PRO|1.5X|香港专线2-原生
-    - 韩国vemss
-    flatten: false
+    - ALL
+    flatten: true
+    icon: https://raw.githubusercontent.com/tugepaopao/Image-Storage/master/cartoon/Cute/github.png
 rules:
 - rule_set:
-    match: https://raw.githubusercontents.com/SHProxy/IOS/main/Rule/advertising.txt
-    policy: REJECT
-- url_regex:
-    match: https://raw.githubusercontents.com/SHProxy/IOS/main/Rule/GlobalMediaplayer.txt
+    match: https://ruleset.skk.moe/List/non_ip/apple_cn.conf
+    policy: DIRECT
+    disabled: false
+- rule_set:
+    match: https://ruleset.skk.moe/List/non_ip/microsoft_cdn.conf
+    policy: DIRECT
+    disabled: false
+- rule_set:
+    match: https://ruleset.skk.moe/List/non_ip/apple_cdn.conf
+    policy: DIRECT
+    disabled: false
+- rule_set:
+    match: https://ruleset.skk.moe/List/non_ip/domestic.conf
+    policy: DIRECT
+    disabled: false
+- domain_suffix:
+    match: szshhtkj.com
     policy: Proxy
 - rule_set:
-    match: https://raw.githubusercontents.com/SHProxy/IOS/main/Rule/China.txt
+    match: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Surge/WeChat/WeChat.list
     policy: DIRECT
 - rule_set:
-    match: https://raw.githubusercontents.com/SHProxy/IOS/main/Rule/Global.txt
-    policy: Proxy
+    match: https://cdn.jsdelivr.net/gh/Loyalsoldier/surge-rules@release/ruleset/direct.txt
+    policy: DIRECT
 - rule_set:
     match: https://raw.githubusercontents.com/VirgilClyne/GetSomeFries/main/ruleset/ASN.China.list
     policy: DIRECT
+- rule_set:
+    match: https://cdn.jsdelivr.net/gh/Loyalsoldier/surge-rules@release/ruleset/proxy.txt
+    policy: Proxy
+- rule_set:
+    match: https://ruleset.skk.moe/List/non_ip/telegram.conf
+    policy: Proxy
+    disabled: false
+- rule_set:
+    match: https://raw.githubusercontents.com/Semporia/TikTok-Unlock/master/Surge/TikTok.list
+    policy: Proxy
 - domain:
     match: cloudflare.com
     policy: Proxy
@@ -150,36 +155,27 @@ rules:
     match: CN
     policy: DIRECT
 - default:
-    policy: Proxy
+    policy: 自动优选
 mitm:
   enabled: true
   ca_p12: egern.p12
   ca_passphrase: egern
 modules:
-- name: 去广告小火箭版
-  url: https://cdn.jsdelivr.net/gh/GMOogway/shadowrocket-rules@master/sr_reject_list.module
-  enabled: true
 - name: tiktok韩国
   url: https://raw.githubusercontent.com/Semporia/TikTok-Unlock/master/Surge/TiKTok-KR.sgmodule
-  enabled: true
-- name: sub-Store
-  url: https://raw.githubusercontent.com/Peng-YM/Sub-Store/master/config/Surge.sgmodule
-  enabled: true
+  enabled: false
 - name: proknockout
   url: https://yfamily.vercel.app/module/proknockout.module
-  enabled: true
+  enabled: false
 - name: pixelance
   url: https://yfamily.vercel.app/module/pixelance.module
-  enabled: true
+  enabled: false
 - name: photoshop
   url: https://yfamily.vercel.app/module/photoshop.module
-  enabled: true
+  enabled: false
 - name: 大神水印
   url: https://yfamily.vercel.app/module/dssy.module
-  enabled: true
+  enabled: false
 - name: YOUTUBE 去广告
   url: https://yfamily.vercel.app/sgmodule/YouTubeAd.sgmodule
-  enabled: true
-- name: 番茄小说去广告
-  url: https://raw.githubusercontent.com/zqzess/rule_for_quantumultX/master/Surge/Module/FanQieNovel.sgmodule
-  enabled: true
+  enabled: false

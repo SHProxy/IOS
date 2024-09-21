@@ -10,10 +10,11 @@ dns:
     - https://dns.alidns.com/dns-query
     - https://doh.pub/dns-query
     - 180.184.1.1
+    - 180.76.76.76
   nameserver-policy:
     www.google.com: 180.184.1.1
     '*.apple.com': https://doh.dns.apple.com/dns-query
-    '*.baidu*.com': ""
+    '*.baidu*.com': "180.76.76.76"
     '*.google.com': 180.184.1.1
     '*.itunes.com': https://doh.dns.apple.com/dns-query
     '*.qq.com': https://dns.pub/dns-query
@@ -22,6 +23,7 @@ dns:
     '*.baidu.com': 180.76.76.76
     '*.icloud.com': https://doh.dns.apple.com/dns-query
     '*.tencent.com': https://dns.pub/dns-query
+  follow-rule: true
 log-level: info
 mode: rule
 proxy-groups:
@@ -115,14 +117,15 @@ proxy-groups:
       - 手动选择
       - DIRECT
     type: select
-proxy-providers: {ZOU: {benchmark-timeout: 5, benchmark-url: 'http://www.gstatic.com/generate_204', interval: 14400, url: 'https://dy.zou666.xyz/api/v1/client/subscribe?token=b67e314d0a83b04f7275ce187bb32675'}, 五元一千: {benchmark-timeout: 5, benchmark-url: 'http://www.gstatic.com/generate_204', interval: 14400, url: 'https://subscribe.nodedomain.top/api/v1/client/subscribe?token=836c2f0929dc1b7dd5b11f93fe79c4d3'}}
-rule-providers: {'': {behavior: domain, format: text, interval: 0, url: 'https://raw.githubusercontents.com/SHProxy/IOS/main/Rule/Global.txt'}, 全球加速: {behavior: domain, format: text, interval: 86400, url: 'https://raw.githubusercontents.com/SHProxy/IOS/main/Rule/Global.txt'}, 国内直连: {behavior: domain, format: text, interval: 86400, url: 'https://raw.githubusercontents.com/SHProxy/IOS/main/Rule/China.txt'}, 国际媒体: {behavior: domain, format: text, interval: 86400, url: 'https://raw.githubusercontents.com/SHProxy/IOS/main/Rule/GlobalMediaplayer.txt'}, 广告终结: {behavior: domain, format: text, interval: 86400, url: 'https://raw.githubusercontents.com/SHProxy/IOS/main/Rule/advertising.txt'}, ASN-China: {behavior: domain, format: text, interval: 86400, url: 'https://raw.githubusercontents.com/SHProxy/IOS/main/Rule/ASN-China.txt'}}
+proxy-providers: {ZOU: {benchmark-timeout: 5, benchmark-url: 'http://connectivitycheck.gstatic.com/generate_204', interval: 14400, url: 'https://45bcb080ade759e2.cdn.jiashule.com/api/v1/client/subscribe?token=b67e314d0a83b04f7275ce187bb32675'}}
+rule-providers: {'': {behavior: domain, format: text, interval: 0, url: 'https://raw.githubusercontents.com/SHProxy/IOS/main/Rule/Global.txt'}, 全球加速: {behavior: domain, format: text, interval: 86400, url: 'https://raw.githubusercontents.com/SHProxy/IOS/main/Rule/Global.txt'}, 国内直连: {behavior: domain, format: text, interval: 86400, url: 'https://raw.githubusercontents.com/SHProxy/IOS/main/Rule/China.txt'}, 国际媒体: {behavior: domain, format: text, interval: 86400, url: 'https://raw.githubusercontents.com/SHProxy/IOS/main/Rule/GlobalMediaplayer.txt'}, 广告终结: {behavior: domain, format: text, interval: 86400, url: 'https://raw.githubusercontents.com/SHProxy/IOS/main/Rule/advertising.txt'}, ASN-China: {behavior: domain, format: text, interval: 86400, url: 'https://raw.githubusercontents.com/SHProxy/IOS/main/Rule/ASN-China.txt'}, 微信规则: {behavior: domain, format: yaml, interval: 0, url: 'https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/WeChat/WeChat.yaml'}}
 rules:
+  - RULE-SET,微信规则,DIRECT # 微信规则
   - RULE-SET,ASN-China,DIRECT # ASN-China
   - RULE-SET,广告终结,REJECT # 广告终结者
   - RULE-SET,国际媒体,国际媒体 # 国际媒体代理
   - RULE-SET,国内直连,DIRECT # 国内直连列表
-  - RULE-SET,全球加速,自动优选 # 全球代理加速
+  - RULE-SET,全球加速,Proxy # 全球代理加速
   - SCRIPT,quic,REJECT
   - IP-ASN,62014,Proxy,no-resolve
   - IP-ASN,59930,Proxy,no-resolve
@@ -163,7 +166,7 @@ rules:
 script:
   shortcuts:
     quic: network == 'udp' and dst_port == 443
-subscribe-url: https://sub.zou666.xyz/api/v1/client/subscribe?token=9e407dad43ecdc992e840e3f457ea73a
+subscribe-url: https://45bcb080ade759e2.cdn.jiashule.com/api/v1/client/subscribe?token=b67e314d0a83b04f7275ce187bb32675
 proxies:
   - auth-str: hysteria
     down-speed: null
@@ -179,24 +182,7 @@ proxies:
     protocol: null
     alpn: null
     benchmark-timeout: 5
-    benchmark-url: http://www.gstatic.com/generate_204
+    benchmark-url: http://connectivitycheck.gstatic.com/generate_204
     auth: "hysteria"
     fast-open: false
-  - # 1x
-    alterId: 0
-    cipher: chacha20-poly1305
-    flow: ""
-    name: 日本01|1X
-    port: 49511
-    server: 935243706c2a34f5.cdn.jiashule.com
-    type: vmess
-    uuid: df2e402b-a8de-455c-bd39-018516481e07
-  - alterId: 0
-    cipher: chacha20-poly1305
-    flow: ""
-    name: 日本02|1X
-    port: 49522
-    server: 91d2af82196df48e.cdn.jiashule.com
-    type: vmess
-    uuid: df2e402b-a8de-455c-bd39-018516481e07
 hosts: null
